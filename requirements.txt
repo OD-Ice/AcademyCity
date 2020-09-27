@@ -1,0 +1,25 @@
+aliyun-python-sdk-core-v3==2.13.11
+asgiref==3.2.10
+bce-python-sdk==0.8.44
+bleach==3.1.5
+Django==3.0.7
+django-cors-headers==3.5.0
+django-debug-toolbar==2.2
+django-shortuuidfield==0.1.3
+djangorestframework==3.11.1
+future==0.18.2
+jmespath==0.10.0
+mysqlclient==1.4.6
+packaging==20.4
+Pillow==7.2.0
+pycrypto @ file:///D:/python_pycharm/%E7%BB%83%E4%B9%A0/django_test/xfz/pycrypto-2.6.1-cp38-none-win_amd64.whl
+pycryptodome==3.9.8
+PyMySQL==0.9.3
+pyparsing==2.4.7
+python-memcached==1.59
+pytz==2020.1
+redis==3.5.3
+shortuuid==1.0.1
+six==1.15.0
+sqlparse==0.3.1
+webencodings==0.5.1
