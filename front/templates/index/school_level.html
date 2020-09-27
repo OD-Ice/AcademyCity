@@ -1,0 +1,82 @@
+{% extends 'common/base.html' %}
+
+{% block title %}
+    科研等级
+{% endblock %}
+
+{% block head %}
+    <script src="{% static 'js/school_level.min.js' %}"></script>
+{% endblock %}
+
+{% block content-header %}
+    <strong>Academy</strong>CITY | Research Level
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <button type="button" id="add-btn" class="btn btn-primary float-right" data-toggle="modal"
+                                data-target="#level-modal">添加等级
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>等级名称</th>
+                                <th>等级序列</th>
+                                <th>相关操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for level in levels %}
+                                <tr>
+                                <td>{{ level.name }}</td>
+                                <td>{{ level.priority }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-warning btn-sm edit-btn" data-toggle="modal" data-target="#level-modal" data-level="{{ level.name }}" data-priority="{{ level.priority }}" data-id="{{ level.pk }}">编辑</button>
+                                    <button class="btn btn-danger btn-sm delete-btn" data-id="{{ level.pk }}">删除</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block endfooter %}
+    <div class="modal fade" id="level-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="level-input" class="col-form-label">科研等级</label>
+                            <input type="text" class="form-control" id="level-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="priority-input" class="col-form-label">等级序列</label>
+                            <input type="number" class="form-control" id="priority-input">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary submit-btn">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

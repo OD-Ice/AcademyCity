@@ -1,0 +1,88 @@
+{% extends 'common/base.html' %}
+
+{% block title %}
+    校园注册
+{% endblock %}
+
+{% block head %}
+    <script src="{% static 'tinymce/tinymce.min.js' %}"></script>
+    <script src="{% static 'js/timymce_init.min.js' %}"></script>
+    <script src="{% static 'js/edit_school.min.js' %}"></script>
+{% endblock %}
+
+{% block content-header %}
+    <strong>Academy</strong>CITY | Edit School
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-lightblue">
+                    <div class="card-header">
+                        <h3>注册校园！称霸学院都市！</h3>
+                    </div>
+                    <form role="form">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="school-name">学校名称</label>
+                                <input type="text" class="form-control" id="school-name" placeholder="输入名称" {% if school %} value="{{ school.name }}" {% endif %} >
+                            </div>
+                            <div class="form-group">
+                                <label for="school-level">科研等级</label>
+                                <select class="form-control" name="school-level" id="school-level">
+                                    {% for level in levels %}
+                                        <option value="{{ level.pk }}" {% if school.school_level.pk == level.pk %}selected{% endif %}>{{ level.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="school-category">分类</label>
+                                <select class="form-control" name="school-category" id="school-category">
+                                    {% for category in categories %}
+                                        <option value="{{ category.pk }}"{% if school.school_category.pk == category.pk %}selected{% endif %}>{{ category.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="super">超能力院校</label>
+                                <select class="form-control" name="super" id="super">
+                                    <option value="0" {% if school.is_super == 0 %}selected{% endif %}>否</option>
+                                    <option value="1" {% if school.is_super == 1 %}selected{% endif %}>是</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="school-badge">校徽</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="school-badge">
+                                        <label for="school-badge" class="custom-file-label">{% if school %}{{ school.school_badge }}{% endif %}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="school-location">地址</label>
+                                <input type="text" class="form-control" id="school-location" placeholder="输入地址" {% if school %}value="{{ school.location }}"{% endif %}>
+                            </div>
+                            <div class="form-group">
+                                <label for="school-email">邮箱</label>
+                                <input type="email" class="form-control" id="school-email" placeholder="输入邮箱" {% if school %}value="{{ school.email }}"{% endif %}>
+                            </div>
+                            <div class="form-group">
+                                <label for="school-course">主教课程</label>
+                                <input type="text" class="form-control" id="school-course" placeholder="输入名称 以逗号分隔" {% if school %}value="{{ school.course_des }}"{% endif %}>
+                            </div>
+                            <div class="form-group">
+                                <label for="school-desc">校园简介</label>
+                                <textarea name="desc" id="school-desc" cols="30" rows="10" class="form-control" placeholder="输入内容...">{% if school %}{{ school.desc | safe }}{% endif %}</textarea>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="card-footer">
+                        <button type="submit" id="submit-btn" class="btn btn-primary float-right" data-school-id="{{ school.pk }}">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

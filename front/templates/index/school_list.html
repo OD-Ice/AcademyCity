@@ -1,0 +1,139 @@
+{% extends 'common/base.html' %}
+{% load ac_filters %}
+
+{% block title %}
+    校园列表
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/index/school_list.min.css' %}">
+    <script src="{% static 'js/school_list.min.js' %}"></script>
+{% endblock %}
+
+{% block content-header %}
+    <strong>Academy</strong>CITY | School List
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <form action="" method="get" class="form-inline">
+                            <div class="form-group left-group">
+                                <label for="school-input">搜索：</label>
+                                {% if school %}
+                                    <input type="text" id="school-input" placeholder="关键字" class="form-control" name="school" value="{{ school }}">
+                                {% else %}
+                                    <input type="text" id="school-input" placeholder="关键字" class="form-control" name="school">
+                                {% endif %}
+                            </div>
+                            <div class="form-group left-group">
+                                <label for="level-input">科研等级：</label>
+                                <select name="level" id="level-input" class="form-control">
+                                    <option value="0">所有等级</option>
+                                    {% for level in levels %}
+                                        {% if level_id and level_id == level.pk%}
+                                            <option value="{{ level.pk }}" selected>{{ level.name }}</option>
+                                        {% else %}
+                                            <option value="{{ level.pk }}">{{ level.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group left-group">
+                                <label for="category-input">分类：</label>
+                                <select name="category" id="category-input" class="form-control">
+                                    <option value="0" selected>所有分类</option>
+                                    {% for category in categories %}
+                                        {% if category_id and category_id == category.pk %}
+                                            <option value="{{ category.pk }}" selected>{{ category.name }}</option>
+                                        {% else %}
+                                            <option value="{{ category.pk }}">{{ category.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group search-btn">
+                                <button class="btn btn-primary">查询</button>
+                            </div>
+                            <div class="form-group search-btn">
+                                <a href="{% url 'index:school_list' %}">清除查询</a>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>学校编号</th>
+                                    <th>名称</th>
+                                    <th>科研等级</th>
+                                    <th>分类</th>
+                                    <th>注册时间</th>
+                                    <th>超能力院校</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for s_school in schools %}
+                                    <tr>
+                                    <td>{{ s_school.pk }}</td>
+                                    <td><a href="{% url 'index:school_detail' s_school.pk %}">{{ s_school.name }}</a></td>
+                                    <td>{{ s_school.school_level.name }}</td>
+                                    <td>{{ s_school.school_category.name }}</td>
+                                    <td>{{ s_school.reg_time | time_format }}</td>
+                                    {% if s_school.is_super %}
+                                        <td>是</td>
+                                    {% else %}
+                                        <td>否</td>
+                                    {% endif %}
+                                    <td>
+                                        <a href="{% url 'index:edit_school' %}?school_id={{ s_school.pk }}" class="btn btn-primary btn-xs">修改</a>
+                                        <button class="del-btn btn btn-danger btn-xs" data-school-id="{{ s_school.pk }}">删除</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <p class="page-info float-left">第 {{ page_obj.number }} 页 / 共 {{ paginator.num_pages }} 页</p>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination float-right">
+                                {# 首页 #}
+                                <li class="page-item"><a class="page-link" href="?p=1{{ url_query }}"><<</a></li>
+                                {# 上一页 #}
+                                {% if not page_obj.has_previous %}
+                                    <li class=" page-item disabled"><a class="page-link" href="javascript:void(0);">上一页</a></li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link" href="?p={{ page_obj.previous_page_number }}{{ url_query }}">上一页</a></li>
+                                {% endif %}
+                                {# 页码 #}
+                                {# 前面的页码 #}
+                                {% for left_page in left_pages %}
+                                    <li class="page-item"><a class="page-link" href="?p={{ left_page }}{{ url_query }}">{{ left_page }}</a></li>
+                                {% endfor %}
+                                {# 当前的页码 #}
+                                <li class="page-item active"><a class="page-link" href="?p={{ current_page }}{{ url_query }}">{{ current_page }}</a></li>
+                                {# 后面的页码 #}
+                                {% for right_page in right_pages %}
+                                    <li class="page-item"><a class="page-link" href="?p={{ right_page }}{{ url_query }}">{{ right_page }}</a></li>
+                                {% endfor %}
+                                {# 下一页 #}
+                                {% if not page_obj.has_next %}
+                                    <li class=" page-item disabled"><a class="page-link" href="javascript:void(0);">下一页</a></li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link" href="?p={{ page_obj.next_page_number }}{{ url_query }}">下一页</a></li>
+                                {% endif %}
+                                {# 尾页 #}
+                                <li class="page-item"><a class="page-link" href="?p={{ paginator.num_pages }}{{ url_query }}">>></a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

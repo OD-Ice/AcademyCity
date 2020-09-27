@@ -1,0 +1,70 @@
+{% extends 'common/base.html' %}
+
+{% block title %}
+    课程表
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/course/time_table.min.css' %}">
+    <script src="{% static 'js/Timetables.min.js' %}"></script>
+    <script src="{% static 'js/time_table.min.js' %}"></script>
+    <script src="{% static 'arttemplate/template-web.js' %}"></script>
+    <script id="course-item" type="text/html">
+    {% verbatim %}
+        <option value="0">取消本节课</option>
+        {{ each school_courses school_course index }}
+            {{ if course_name == school_course.name }}
+                <option value="{{ school_course.id }}" selected>{{ school_course.name }}</option>
+            {{ else }}
+                <option value="{{ school_course.id }}">{{ school_course.name }}</option>
+            {{ /if }}
+        {{ /each }}
+    {% endverbatim %}
+    </script>
+{% endblock %}
+
+{% block content-header %}
+    <strong>Academy</strong>CITY | Class Schedule
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>点击方块进行选课</h3>
+                {% if user.school %}
+                    <div id="coursesTable" data-weeks="{{ weeks }}" data-course-type="{{ course_type }}"></div>
+                {% else %}
+                    <span>您还未加入任何学校！</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block endfooter %}
+    <div class="modal fade" id="course-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="course-input" class="col-form-label">选择课程</label>
+                            <select id="course-input" class="form-control">
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary submit-btn">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

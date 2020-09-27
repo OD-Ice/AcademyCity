@@ -1,0 +1,61 @@
+{% extends 'common/base.html' %}
+
+{% block title %}
+    考试成绩
+{% endblock %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content-header %}
+    <strong>Academy</strong>CITY | Test Score
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-outline">
+                    <div class="card-header">
+                        <h3>考试成绩</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="list-group-item-secondary">
+                                    <th>科目</th>
+                                    <th>分数</th>
+                                    <th>等级</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for score in scores %}
+                                    {% if score.score < 60 %}
+                                        <tr class="list-group-item-danger">
+                                    {% elif score.score >= 90 %}
+                                        <tr class="list-group-item-success">
+                                    {% else %}
+                                        <tr>
+                                    {% endif %}
+                                            <td>{{ score.course.name }}</td>
+                                            <td>{{ score.score }}</td>
+                                            {% if score.score < 60 %}
+                                                <td>不及格</td>
+                                            {% elif score.score >= 90 %}
+                                                <td>优秀</td>
+                                            {% elif 60 <= score.score and score.score < 90 %}
+                                                <td>良好</td>
+                                            {% else %}
+                                                <td></td>
+                                            {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

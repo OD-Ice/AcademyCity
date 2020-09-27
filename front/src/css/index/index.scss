@@ -1,0 +1,10 @@
+.avatar-img {
+    cursor: pointer;
+    transition: 0.5s;
+    height: 150px;
+    width: 150px;
+}
+
+.avatar-img:hover {
+    opacity: 0.5;
+}

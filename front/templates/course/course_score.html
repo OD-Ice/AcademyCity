@@ -1,0 +1,55 @@
+{% extends 'common/base.html' %}
+
+{% block title %}
+    成绩录入
+{% endblock %}
+
+{% block head %}
+    <script src="{% static 'js/course_score.min.js' %}"></script>
+    <script type="text/javascript">
+        function showButton(node) {
+            var confirmBtn = node.parentNode.nextElementSibling.firstChild;
+            confirmBtn.removeAttribute("hidden");
+        }
+    </script>
+{% endblock %}
+
+{% block content-header %}
+    <strong>Academy</strong>CITY | Score Entry
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-solid">
+                    <div class="card-header">
+                        <h3>{{ course.name }} | 成绩录入</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>学生编号</th>
+                                    <th>学生姓名</th>
+                                    <th>本科成绩</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for score in scores %}
+                                    <tr>
+                                        <td class="student-uid">{{ score.student.uid }}</td>
+                                        <td class="student-name">{{ score.student.username }}</td>
+                                        <td class="score"><input type="number" value="{{ score.score }}" class="form-control" onchange="showButton(this)"></td>
+                                        <td><button hidden class="confirm btn btn-block btn-primary" data-course-id="{{ course.pk }}">确定</button></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

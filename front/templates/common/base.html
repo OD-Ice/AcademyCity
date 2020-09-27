@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}{% endblock %} | 学园都市</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'adminLTE/plugins/fontawesome-free/css/all.min.css' %}">
+    <!-- Ionicons -->
+    {#  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">#}
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link rel="stylesheet"
+          href="{% static 'adminLTE/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="{% static 'adminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+    <!-- JQVMap -->
+{#    <link rel="stylesheet" href="{% static 'adminLTE/plugins/jqvmap/jqvmap.min.css' %}">#}
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'adminLTE/dist/css/adminlte.min.css' %}">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="{% static 'adminLTE/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="{% static 'adminLTE/plugins/daterangepicker/daterangepicker.css' %}">
+    <!-- summernote -->
+    <link rel="stylesheet" href="{% static 'adminLTE/plugins/summernote/summernote-bs4.css' %}">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <!-- jQuery -->
+    <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="{% static 'adminLTE/plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="{% static 'adminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- ChartJS -->
+    <script src="{% static 'adminLTE/plugins/chart.js/Chart.min.js' %}"></script>
+    <!-- Sparkline -->
+    <script src="{% static 'adminLTE/plugins/sparklines/sparkline.js' %}"></script>
+    <!-- JQVMap -->
+{#    <script src="{% static 'adminLTE/plugins/jqvmap/jquery.vmap.min.js' %}"></script>#}
+{#    <script src="{% static 'adminLTE/plugins/jqvmap/maps/jquery.vmap.usa.js' %}"></script>#}
+    <!-- jQuery Knob Chart -->
+    <script src="{% static 'adminLTE/plugins/jquery-knob/jquery.knob.min.js' %}"></script>
+    <!-- daterangepicker -->
+    <script src="{% static 'adminLTE/plugins/moment/moment.min.js' %}"></script>
+    <script src="{% static 'adminLTE/plugins/daterangepicker/daterangepicker.js' %}"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="{% static 'adminLTE/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+    <!-- Summernote -->
+    <script src="{% static 'adminLTE/plugins/summernote/summernote-bs4.min.js' %}"></script>
+    <!-- overlayScrollbars -->
+    <script src="{% static 'adminLTE/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'adminLTE/dist/js/adminlte.js' %}"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+{#    <script src="{% static 'adminLTE/dist/js/pages/dashboard.js' %}"></script>#}
+    <!-- AdminLTE for demo purposes -->
+{#    <script src="{% static 'adminLTE/dist/js/demo.js' %}"></script>#}
+    <!-- ajax -->
+    <script src="{% static 'js/acajax.min.js' %}"></script>
+    <!-- Sweetalter -->
+    <script src="{% static 'js/sweetalert.min.js' %}"></script>
+    <script src="{% static 'js/acalert.min.js' %}"></script>
+    <!-- base -->
+    <script src="{% static 'js/base.min.js' %}"></script>
+    {% block head %}{% endblock %}
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="#" class="nav-link">首页</a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="#" class="nav-link">相关</a>
+            </li>
+        </ul>
+
+        <!-- SEARCH FORM -->
+        <form class="form-inline ml-3">
+            <div class="input-group input-group-sm">
+                <input class="form-control form-control-navbar" type="search" placeholder="搜索" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-navbar" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-light-lightblue elevation-4">
+        <!-- Brand Logo -->
+        <a href="#" class="brand-link">
+            <img src="{% static 'images/ac_logo.min.png' %}" alt="AcademyCity logo"
+                 class="brand-image img-circle elevation-3"
+                 style="opacity: .8">
+            <span class="brand-text font-weight-light"><b>Academy</b>CITY</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar user panel (optional) -->
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <img src="{{ user.avatar }}" class="img-circle elevation-2"
+                         alt="User Image" style="height: 33px; width: 33px">
+                </div>
+                <div class="info">
+                    <a href="#" class="d-block">{{ user.username }}</a>
+                </div>
+            </div>
+
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+                    <!-- Add icons to the links using the .nav-icon class
+                         with font-awesome or any other icon font library -->
+                    <li class="nav-item">
+                        <a href="{% url 'index:index' %}" class="nav-link">
+                            <i class="nav-icon fas fa-home"></i>
+                            <p>
+                                首页
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-user-ninja"></i>
+                            <p>
+                                个人主页
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item has-treeview">
+                        <a href="javascript: void(0);" class="nav-link">
+                            <i class="nav-icon fas fa-newspaper"></i>
+                            <p>
+                                校级管理
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{% url 'index:add_school' %}" class="nav-link">
+                                    <i class="nav-icon fas fa-edit"></i>
+                                    <p>
+                                        校园注册
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'index:school_level' %}" class="nav-link">
+                                    <i class="nav-icon fas fa-tags"></i>
+                                    <p>
+                                        科研等级
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'index:school_list' %}" class="nav-link">
+                                    <i class="nav-icon fas fa-list "></i>
+                                    <p>
+                                        校园列表
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'index:director_list' %}" class="nav-link">
+                                    <i class="nav-icon fas fa-user-nurse"></i>
+                                    <p>
+                                        校级管理名单
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item  has-treeview">
+                        <a href="javascript: void(0);" class="nav-link">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>
+                                学生管理
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{% url 'student:student_list' %}" class="nav-link">
+                                    <i class="nav-icon fas fa-address-book "></i>
+                                    <p>
+                                        学生名单
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'student:student_score' %}" class="nav-link">
+                                    <i class="nav-icon fas fa-pencil-ruler "></i>
+                                    <p>
+                                        考试成绩
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-tv"></i>
+                            <p>
+                                课程管理
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{% url 'course:publish_course' %}" class="nav-link">
+                                    <i class="nav-icon fas fa-edit"></i>
+                                    <p>
+                                        发布课程
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'course:time_table' %}" class="nav-link">
+                                    <i class="nav-icon fas fa-table"></i>
+                                    <p>
+                                        课程表
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'course:course_list' user.school.pk %}" class="nav-link">
+                                    <i class="nav-icon fas fa-pen-fancy"></i>
+                                    <p>
+                                        成绩录入
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <h1>{% block content-header %}{% endblock %}</h1>
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+            {% block content %}
+            {% endblock %}
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+        <strong>Academy</strong>CITY
+    </footer>
+</div>
+<!-- ./wrapper -->
+{% block endfooter %}
+{% endblock %}
+</body>
+</html>

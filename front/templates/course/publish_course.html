@@ -1,0 +1,96 @@
+{% extends 'common/base.html' %}
+
+{% block title %}
+    发布课程
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'adminlte/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css' %}">
+    <script src="{% static 'adminlte/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js' %}"></script>
+    <script src="{% static 'js/publish_course.min.js' %}"></script>
+{% endblock %}
+
+{% block content-header %}
+    <strong>Academy</strong>CITY | Publish Course
+{% endblock %}
+
+{% block content %}
+    <div class="card card-default">
+        <div class="card-header">
+            <h3 class="card-title">课程选择</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#course-modal">添加课程</button>
+                        <select class="duallistbox" multiple="multiple" style="height: 200px;">
+                            {% for course in courses %}
+                                {% if course in user.school.course_set.all %}
+                                    <option value="{{ course.pk }}" selected>{{ course.name }}&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;{{ course.week_day.name }}&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;{{ course.course_time.name }}</option>
+                                {% else %}
+                                    <option value="{{ course.pk }}">{{ course.name }}&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;{{ course.week_day.name }}&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;&nbsp;{{ course.course_time.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <!-- /.form-group -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+            <button class="btn btn-primary float-right define-btn" data-school-id="{{ user.school_id }}">确定</button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block endfooter %}
+    <div class="modal fade" id="course-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="course-input" class="col-form-label">课程名称</label>
+                            <input type="text" class="form-control" id="course-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="weekday-input" class="col-form-label">上课日期</label>
+                            <select class="form-control" name="weekday" id="weekday-input">
+                                {% for weekday in weekdays %}
+                                    <option value="{{ weekday.pk }}">{{ weekday.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="time-inpt" class="col-form-label">上课时间</label>
+                            <select class="form-control" name="time" id="time-input">
+                                {% for course_time in course_times %}
+                                    <option value="{{ course_time.pk }}">{{ course_time.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary submit-btn">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

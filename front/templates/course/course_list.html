@@ -1,0 +1,27 @@
+{% extends 'common/base.html' %}
+
+{% block title %}
+    课程列表
+{% endblock %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content-header %}
+    <strong>Academy</strong>CITY | Course List
+{% endblock %}
+
+{% block content %}
+    <div class="card card-solid">
+        <div class="card-body pb-0">
+            <div class="row d-flex align-items-stretch">
+                {% for course in courses %}
+                    <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch" style="margin-bottom: 20px;">
+                        <a href="{% url 'course:course_score' course.pk %}" class="btn btn-default btn-block">{{ course.name }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

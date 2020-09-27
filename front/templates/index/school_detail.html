@@ -1,0 +1,126 @@
+{% extends 'common/base.html' %}
+
+{% load ac_filters %}
+
+{% block title %}
+    常盘台中学
+{% endblock %}
+
+{% block head %}
+    <script src="{% static 'js/school_detail.min.js' %}"></script>
+{% endblock %}
+
+{% block content-header %}
+    <strong>Academy</strong>CITY | {{ school.name }}
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card card-primary card-outline">
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <img class="profile-user-img img-fluid img-circle" src="{{ school.school_badge }}" alt="">
+                        </div>
+                        <h3 class="profile-username text-center">{{ school.name }}</h3>
+                        <p class="text-muted text-center">{{ school.school_level.name }} {{ school.school_category.name }}
+                            {% if not school.is_super %}
+                                非超能力院校
+                            {% else %}
+                                超能力院校
+                            {% endif %}</p>
+                        <hr>
+                        {% if user.school %}
+                            {% if user.school.pk == school.pk %}
+                                <button class="btn btn-danger btn-block quit-btn" data-school-name="{{ school.name }}">退出学院</button>
+                            {% else %}
+                                <button class="btn btn-primary btn-block join-btn disabled"><b>申请加入</b></button>
+                            {% endif %}
+                        {% else %}
+                            <button class="btn btn-primary btn-block join-btn" data-school-id="{{ school.pk }}" data-school-name="{{ school.name }}"><b>申请加入</b></button>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <b>INFORMATION</b>
+                    </div>
+                    <div class="card-body">
+                        <strong>
+                            <i class="fas fa-book mr-1"></i>
+                            Education
+                        </strong>
+                        <p class="text-muted">
+                            {{ school.course_des }}
+                        </p>
+                        <hr>
+                        <strong>
+                            <i class="fas fa-map-marker-alt mr-1"></i>
+                            Location
+                        </strong>
+                        <p class="text-muted">
+                            {{ school.location }}
+                        </p>
+                        <hr>
+                        <strong>
+                            <i class="fas fa-envelope mr-1"></i>
+                            Email
+                        </strong>
+                        <p class="text-muted">
+                            {{ school.email }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header">
+                        <h3><strong>Introduction</strong></h3>
+                    </div>
+                    <div class="card-body">
+                        <article class="article">
+                            {{ school.desc | safe}}
+                        </article>
+                        <hr>
+                        <div class="input-group">
+                            <textarea class="form-control" rows="5" name="comment" id="comment" placeholder="立即评论..."></textarea>
+                        </div>
+                        <br>
+                        <div class="submit-btn-group">
+                            <button class="btn btn-primary float-right submit-btn" data-school-id="{{ school.pk }}">发送评论</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3><strong>Comments</strong></h3>
+                    </div>
+                    <div class="card-body">
+                        {% for comment in comments %}
+                             <div class="post">
+                                <div class="user-block">
+                                    {% if comment.author.is_active %}
+                                        <img src="{{ comment.author.avatar }}" class="img-circle" alt="">
+                                        <span class="username">
+                                            <a href="#">{{ comment.author.username }}</a>
+                                        </span>
+                                        <span class="description pub-time">{{ comment.pub_time | time_since }}</span>
+                                    {% else %}
+                                        <img src="/media/Avatar.jpg/" class="img-circle" alt="">
+                                        <span class="username">
+                                            <a href="javascript:void(0);">此用户已注销</a>
+                                        </span>
+                                        <span class="description pub-time">{{ comment.pub_time | time_since}}</span>
+                                    {% endif %}
+                                </div>
+                                <p>&emsp;&emsp;&emsp;{{ comment.content }}</p>
+                            </div>
+                        {% endfor %}
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

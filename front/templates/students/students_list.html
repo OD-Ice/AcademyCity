@@ -1,0 +1,114 @@
+{% extends 'common/base.html' %}
+
+{% load ac_filters %}
+
+{% block title %}
+    学生名单
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/student/students_list.min.css' %}">
+    <script src="{% static 'js/students_list.min.js' %}"></script>
+{% endblock %}
+
+{% block content-header %}
+    <strong>Academy</strong>CITY | Student List
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <form action="" method="get" class="form-inline">
+                            <h3 class="header-title">{{ user.school.name }}学生名单</h3>
+                            <div class="form-group left-group">
+                                <label for="name-input">搜索：</label>
+                                {% if name %}
+                                    <input type="text" id="name-input" placeholder="学生姓名" class="form-control" name="name" value="{{ name }}">
+                                {% else %}
+                                    <input type="text" id="school-input" placeholder="学生姓名" class="form-control" name="name">
+                                {% endif %}
+                            </div>
+                            <div class="form-group search-btn">
+                                <button class="btn btn-primary">查询</button>
+                            </div>
+                            <div class="form-group search-btn">
+                                <a href="{% url 'student:student_list' %}">清除查询</a>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>学生编号</th>
+                                    <th>姓名</th>
+                                    <th>超能力等级</th>
+                                    <th>手机号码</th>
+                                    <th>邮箱</th>
+                                    <th>最后登录</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for student in students %}
+                                    <tr>
+                                    <td>{{ student.uid }}</td>
+                                    <td><a href="#">{{ student.username }}</a></td>
+                                    <td>{{ student.superpower.name }}</td>
+                                    <td>{{ student.telephone }}</td>
+                                    <td>{{ student.email }}</td>
+                                    <td>{{ student.last_login | time_format }}</td>
+                                    <td>
+                                    {% if user.is_director %}
+                                        <button class="del-btn btn btn-block btn-danger" data-student-id="{{ student.pk }}" data-student-name="{{ student.username }}">开除学籍!</button>
+                                    {% else %}
+                                        <button class="del-btn btn btn-block btn-danger disabled">开除学籍!</button>
+                                    {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <p class="page-info float-left">第 {{ page_obj.number }} 页 / 共 {{ paginator.num_pages }} 页</p>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination float-right">
+                                {# 首页 #}
+                                <li class="page-item"><a class="page-link" href="?p=1{{ url_query }}"><<</a></li>
+                                {# 上一页 #}
+                                {% if not page_obj.has_previous %}
+                                    <li class=" page-item disabled"><a class="page-link" href="javascript:void(0);">上一页</a></li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link" href="?p={{ page_obj.previous_page_number }}{{ url_query }}">上一页</a></li>
+                                {% endif %}
+                                {# 页码 #}
+                                {# 前面的页码 #}
+                                {% for left_page in left_pages %}
+                                    <li class="page-item"><a class="page-link" href="?p={{ left_page }}{{ url_query }}">{{ left_page }}</a></li>
+                                {% endfor %}
+                                {# 当前的页码 #}
+                                <li class="page-item active"><a class="page-link" href="?p={{ current_page }}{{ url_query }}">{{ current_page }}</a></li>
+                                {# 后面的页码 #}
+                                {% for right_page in right_pages %}
+                                    <li class="page-item"><a class="page-link" href="?p={{ right_page }}{{ url_query }}">{{ right_page }}</a></li>
+                                {% endfor %}
+                                {# 下一页 #}
+                                {% if not page_obj.has_next %}
+                                    <li class=" page-item disabled"><a class="page-link" href="javascript:void(0);">下一页</a></li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link" href="?p={{ page_obj.next_page_number }}{{ url_query }}">下一页</a></li>
+                                {% endif %}
+                                {# 尾页 #}
+                                <li class="page-item"><a class="page-link" href="?p={{ paginator.num_pages }}{{ url_query }}">>></a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
