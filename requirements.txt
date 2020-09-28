@@ -12,7 +12,7 @@ jmespath==0.10.0
 mysqlclient==1.4.6
 packaging==20.4
 Pillow==7.2.0
-pycrypto @ file:///D:/python_pycharm/%E7%BB%83%E4%B9%A0/django_test/xfz/pycrypto-2.6.1-cp38-none-win_amd64.whl
+pycrypto==2.6.1
 pycryptodome==3.9.8
 PyMySQL==0.9.3
 pyparsing==2.4.7
