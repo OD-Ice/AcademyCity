@@ -212,7 +212,7 @@ def school_detail(request, school_id):
         }
         return render(request, 'index/school_detail.html', context=context)
     except:
-        return Http404
+        raise Http404
 
 
 @require_POST

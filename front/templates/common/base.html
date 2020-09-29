@@ -245,7 +245,11 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{% url 'course:course_list' user.school.pk %}" class="nav-link">
+                                {% if user.school %}
+                                    <a href="{% url 'course:course_list' user.school.pk %}" class="nav-link">
+                                {% else %}
+                                    <a href="#" class="nav-link" disabled>
+                                {% endif %}
                                     <i class="nav-icon fas fa-pen-fancy"></i>
                                     <p>
                                         成绩录入
