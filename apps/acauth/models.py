@@ -33,8 +33,8 @@ class UserManager(BaseUserManager):
 
 
 def get_superpower_default_id():
-    default = Superpower.objects.get(pk=7)
-    return default.pk
+    default = 7
+    return default
 
 
 class User(AbstractUser):
