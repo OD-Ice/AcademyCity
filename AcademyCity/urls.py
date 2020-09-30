@@ -27,5 +27,4 @@ urlpatterns = [
     path('course/', include('apps.course.urls')),
     # 网站图标
     path('favicon.ico', RedirectView.as_view(url='/static/images/favicon.min.ico')),
-    url(r'media/(?P<path>.*)$', server, {'document_root': settings.MEDIA_ROOT}),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
