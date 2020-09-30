@@ -248,7 +248,7 @@
                                 {% if user.school %}
                                     <a href="{% url 'course:course_list' user.school.pk %}" class="nav-link">
                                 {% else %}
-                                    <a href="#" class="nav-link" disabled>
+                                    <a href="javascript: void(0);" class="nav-link">
                                 {% endif %}
                                     <i class="nav-icon fas fa-pen-fancy"></i>
                                     <p>

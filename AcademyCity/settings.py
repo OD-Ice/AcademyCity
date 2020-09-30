@@ -79,7 +79,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'AcademyCity.wsgi.application'
+WSGI_APPLICATION = 'academycity.wsgi.application'
 
 CACHES = {
     'default': {
