@@ -237,7 +237,11 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{% url 'course:time_table' %}" class="nav-link">
+                                {% if user.school %}
+                                     <a href="{% url 'course:time_table' %}" class="nav-link">
+                                {% else %}
+                                     <a href="javascript: void(0);" class="nav-link bg-gray disabled">
+                                {% endif %}
                                     <i class="nav-icon fas fa-table"></i>
                                     <p>
                                         课程表
@@ -248,7 +252,7 @@
                                 {% if user.school %}
                                     <a href="{% url 'course:course_list' user.school.pk %}" class="nav-link">
                                 {% else %}
-                                    <a href="javascript: void(0);" class="nav-link">
+                                    <a href="javascript: void(0);" class="nav-link bg-gray disabled">
                                 {% endif %}
                                     <i class="nav-icon fas fa-pen-fancy"></i>
                                     <p>
