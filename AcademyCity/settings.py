@@ -55,7 +55,7 @@ MIDDLEWARE = [
     'apps.acauth.middlewares.ACLogin',  # 验证是否登录
 ]
 
-ROOT_URLCONF = 'AcademyCity.urls'
+ROOT_URLCONF = 'academycity.urls'
 
 TEMPLATES = [
     {
