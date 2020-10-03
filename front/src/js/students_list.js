@@ -2,6 +2,26 @@ function StudentList() {
 
 }
 
+StudentList.prototype.listenEditEvent = function () {
+    var submitBtn = $('.submit-btn');
+    var levelInput = $('#level-input');
+    submitBtn.click(function (event) {
+        event.preventDefault();
+        var studentId = submitBtn.data('student-id');
+        var level = levelInput.val();
+        acajax.post({
+            'url': '/student/student_list/',
+            'data': {
+                'student_id': studentId,
+                'level_id': level,
+            },
+            'success': function (result) {
+                window.location.reload();
+            }
+        });
+    });
+};
+
 StudentList.prototype.listenDelEvent = function () {
     var delBtn = $('.del-btn');
     delBtn.click(function (event) {
@@ -33,9 +53,20 @@ StudentList.prototype.listenDelEvent = function () {
 
 StudentList.prototype.run = function () {
     this.listenDelEvent();
+    this.listenEditEvent();
 };
 
 $(function () {
     var student_list = new StudentList();
     student_list.run();
+
+    $('#level-modal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var submitBtn = $('.submit-btn');
+        var studentSuperpower = button.data('student-superpower');
+        var studentId = button.data('student-id');
+        var modal = $(this);
+        modal.find('option[value="'+studentSuperpower+'"]').attr('selected', true);
+        submitBtn.attr('data-student-id', studentId);
+    });
 });

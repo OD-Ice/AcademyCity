@@ -19,46 +19,43 @@
 {% block content %}
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-5">
-                <div class="card card-primary card-outline">
-                    <div class="card-body box-profile">
-                        <div class="text-center">
-                            <img class="img-thumbnail img-fluid img-circle avatar-img" src="{{ user.avatar }}" alt="">
-                            <input type="file" class="avatar-input" accept="image/*" hidden>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="card card-primary card-outline col-8">
+                        <div class="card-body box-profile ">
+                            <div class="text-center">
+                                <img title="更换头像" class="img-thumbnail img-fluid img-circle avatar-img" src="{{ user.avatar }}" alt="">
+                                <input type="file" class="avatar-input" accept="image/*" hidden>
+                            </div>
+                            <h3 class="text-center">{{ user.username }}</h3>
+                            <p class="text-muted text-center">{{ user.school.name }} {% if user.is_director %}管理者{% else %}学生{% endif %}</p>
+                            <p class="text-muted text-center">{{ user.superpower.name }}</p>
                         </div>
-                        <h3 class="text-center">{{ user.username }}</h3>
-                        <p class="text-muted text-center">{{ user.school.name }} {% if user.is_director %}管理者{% else %}学生{% endif %}</p>
-                        <p class="text-muted text-center">{{ user.superpower.name }}</p>
+                    </div>
+                    <div class="card card-primary card-outline col-4">
+                        <div class="card-body">
+                            <div class="level-btn">
+                                <button class="btn btn-block btn-outline-primary apply-level" data-toggle="modal" data-target="#level-modal">等级申请</button>
+                            </div>
+                            <br>
+                            <div class="director-btn">
+                                {% if user.is_director %}
+                                    <button title="您已经是管理者！" class="btn btn-block btn-outline-primary disabled">管理申请</button>
+                                {% else %}
+                                    <button class="btn btn-block btn-outline-primary apply-director">管理申请</button>
+                                {% endif %}
+                            </div>
+                            <br>
+                            <div class="school-btn">
+                                {% if user.school %}
+                                    <a href="{% url 'index:school_detail' user.school.pk %}" class="btn btn-block btn-outline-primary">本校链接</a>
+                                {% else %}
+                                    <a title="请先加入学校！" href="#" class="btn btn-block btn-outline-primary disabled">本校链接</a>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <!-- Calendar -->
-                <div class="card bg-gradient-success">
-                    <div class="card-header border-0">
-                        <h3 class="card-title">
-                            <i class="far fa-calendar-alt"></i>
-                            日历
-                        </h3>
-                        <!-- tools card -->
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-success btn-sm" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-success btn-sm" data-card-widget="remove">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <!-- /. tools -->
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body pt-0">
-                        <!--The calendar -->
-                        <div id="calendar" style="width: 100%"></div>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
-            </div>
-            <div class="col-md-7">
                 <!-- TO DO List -->
                 <div class="card">
                     <div class="card-header">
@@ -79,114 +76,103 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <ul class="todo-list" data-widget="todo-list">
-                            <li>
-                                <!-- drag handle -->
-                                <span class="handle">
-                                  <i class="fas fa-ellipsis-v"></i>
-                                  <i class="fas fa-ellipsis-v"></i>
-                                </span>
-                                <!-- checkbox -->
-                                <div class="icheck-primary d-inline ml-2">
-                                    <input type="checkbox" value="" name="todo1" id="todoCheck1">
-                                    <label for="todoCheck1"></label>
-                                </div>
+                            {% for message in messages %}
+                                <li>
                                 <!-- todo text -->
-                                <span class="text">Design a nice theme</span>
+                                <span class="text"><a class="text-muted" href="javascript: void(0);">{{ message.content }}</a></span>
                                 <!-- Emphasis label -->
-                                <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small>
+                                <small class="badge badge-danger"><i class="far fa-clock"></i>{{ message.pub_time | time_since }}</small>
                                 <!-- General tools such as edit or delete-->
-                                <div class="tools">
-                                    <i class="fas fa-edit"></i>
-                                    <i class="fas fa-trash-o"></i>
-                                </div>
+                                {% if user.is_director %}
+                                    {% if message.type.name == 'apply_level' %}
+                                        <div class="tools">
+                                            <button class="btn btn-sm btn-danger del-message" data-message-id="{{ message.pk }}">拒绝</button>
+                                        </div>
+                                        <div class="tools">
+                                            <button data-sponsor="{{ message.sponsor.uid }}" data-level="{{ message.data.level.pk }}" data-message-id="{{ message.pk }}" class="btn btn-sm btn-success agree_apply_level">同意</button>
+                                        </div>
+                                    {% elif message.type.name == 'apply_director' %}
+                                        <div class="tools">
+                                            <button class="btn btn-sm btn-danger del-message" data-message-id="{{ message.pk }}">拒绝</button>
+                                        </div>
+                                        <div class="tools">
+                                            <button data-sponsor="{{ message.sponsor.uid }}" data-message-id="{{ message.pk }}" class="btn btn-sm btn-success agree_apply_director">同意</button>
+                                        </div>
+                                    {% elif message.type.name == 'message' %}
+                                        <div class="tools">
+                                            <button class="btn btn-sm btn-danger del-message" data-message-id="{{ message.pk }}">清除</button>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
                             </li>
-                            <li>
-                                <span class="handle">
-                                  <i class="fas fa-ellipsis-v"></i>
-                                  <i class="fas fa-ellipsis-v"></i>
-                                </span>
-                                <div class="icheck-primary d-inline ml-2">
-                                    <input type="checkbox" value="" name="todo2" id="todoCheck2" checked>
-                                    <label for="todoCheck2"></label>
-                                </div>
-                                <span class="text">Make the theme responsive</span>
-                                <small class="badge badge-info"><i class="far fa-clock"></i> 4 hours</small>
-                                <div class="tools">
-                                    <i class="fas fa-edit"></i>
-                                    <i class="fas fa-trash-o"></i>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="handle">
-                                  <i class="fas fa-ellipsis-v"></i>
-                                  <i class="fas fa-ellipsis-v"></i>
-                                </span>
-                                <div class="icheck-primary d-inline ml-2">
-                                    <input type="checkbox" value="" name="todo3" id="todoCheck3">
-                                    <label for="todoCheck3"></label>
-                                </div>
-                                <span class="text">Let theme shine like a star</span>
-                                <small class="badge badge-warning"><i class="far fa-clock"></i> 1 day</small>
-                                <div class="tools">
-                                    <i class="fas fa-edit"></i>
-                                    <i class="fas fa-trash-o"></i>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="handle">
-                                  <i class="fas fa-ellipsis-v"></i>
-                                  <i class="fas fa-ellipsis-v"></i>
-                                </span>
-                                <div class="icheck-primary d-inline ml-2">
-                                    <input type="checkbox" value="" name="todo4" id="todoCheck4">
-                                    <label for="todoCheck4"></label>
-                                </div>
-                                <span class="text">Let theme shine like a star</span>
-                                <small class="badge badge-success"><i class="far fa-clock"></i> 3 days</small>
-                                <div class="tools">
-                                    <i class="fas fa-edit"></i>
-                                    <i class="fas fa-trash-o"></i>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="handle">
-                                  <i class="fas fa-ellipsis-v"></i>
-                                  <i class="fas fa-ellipsis-v"></i>
-                                </span>
-                                <div class="icheck-primary d-inline ml-2">
-                                    <input type="checkbox" value="" name="todo5" id="todoCheck5">
-                                    <label for="todoCheck5"></label>
-                                </div>
-                                <span class="text">Check your messages and notifications</span>
-                                <small class="badge badge-primary"><i class="far fa-clock"></i> 1 week</small>
-                                <div class="tools">
-                                    <i class="fas fa-edit"></i>
-                                    <i class="fas fa-trash-o"></i>
-                                </div>
-                            </li>
-                            <li>
-                                <span class="handle">
-                                  <i class="fas fa-ellipsis-v"></i>
-                                  <i class="fas fa-ellipsis-v"></i>
-                                </span>
-                                <div class="icheck-primary d-inline ml-2">
-                                    <input type="checkbox" value="" name="todo6" id="todoCheck6">
-                                    <label for="todoCheck6"></label>
-                                </div>
-                                <span class="text">Let theme shine like a star</span>
-                                <small class="badge badge-secondary"><i class="far fa-clock"></i> 1 month</small>
-                                <div class="tools">
-                                    <i class="fas fa-edit"></i>
-                                    <i class="fas fa-trash-o"></i>
-                                </div>
-                            </li>
+                            {% endfor %}
                         </ul>
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer clearfix">
-                        <button type="button" class="btn btn-info float-right"><i class="fas fa-plus"></i> Add item
-                        </button>
+                        <form action="{% url 'index:add_message' %}" method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <input title="不超过100字符" type="text" name="content" class="form-control col-9" placeholder="请输入要发布的消息...">
+                                <input type="text" name="type" value="message" hidden>
+                                <button type="submit" class="btn btn-info float-right col-2" style="margin-left: 40px;">发布消息</button>
+                            </div>
+                        </form>
                     </div>
+                </div>
+                <!-- /.card -->
+            </div>
+            <div class="col-md-6">
+                <!-- DONUT CHART -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fa fa-chart-pie mr-1"></i>
+                            Our School Superpower Chart
+                        </h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                                    class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i
+                                    class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        {% if user.school %}
+                            <canvas data-labels="{{ labels }}" data-counts="{{ counts }}" id="donutChart"
+                                    style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        {% else %}
+                            <h1>您还未加入任何学校！</h1>
+                        {% endif %}
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+                <!-- Calendar -->
+                <div class="card bg-gradient-cyan col-12">
+                    <div class="card-header border-0">
+                        <h3 class="card-title">
+                            <i class="far fa-calendar-alt"></i>
+                            Calendar
+                        </h3>
+                        <!-- tools card -->
+                        <div class="card-tools">
+                            <button type="button" class="btn bg-gradient-cyan btn-sm" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn bg-gradient-cyan btn-sm" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <!-- /. tools -->
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body pt-0">
+                        <!--The calendar -->
+                        <div id="calendar" style="width: 100%"></div>
+                    </div>
+                    <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
                 <div class="card card-outline">
@@ -218,6 +204,41 @@
                             </div>
                         {% endfor %}
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block endfooter %}
+    <div class="modal fade" id="level-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>能力等级申请</span>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="level-input" class="col-form-label">能力等级</label>
+                            <select class="form-control" id="level-input">
+                                {% for level in levels %}
+                                    {% if user.superpower == level %}
+                                        <option value="{{ level.pk }}" selected>{{ level.name }}</option>
+                                    {% else %}
+                                        <option value="{{ level.pk }}">{{ level.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary level-msg-btn">确定</button>
                 </div>
             </div>
         </div>

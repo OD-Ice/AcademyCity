@@ -48,6 +48,11 @@ class Login(View):
             return restful.params_error(form.get_errors())
 
 
+def logout_view(request):
+    logout(request)
+    return redirect(reverse('index:index'))
+
+
 class Register(View):
     def get(self, request):
         if not hasattr(request, 'user') or not request.user.is_authenticated:

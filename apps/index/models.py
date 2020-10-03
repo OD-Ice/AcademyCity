@@ -1,4 +1,5 @@
 from django.db import models
+from picklefield.fields import PickledObjectField
 
 
 class SchoolCategory(models.Model):
@@ -38,6 +39,22 @@ class Comments(models.Model):
     author = models.ForeignKey('acauth.User', on_delete=models.SET_NULL, null=True)
     pub_time = models.DateTimeField(auto_now_add=True)
     school = models.ForeignKey('School', on_delete=models.CASCADE, null=True)
+
+    class Meta:
+        ordering = ['-pub_time']
+
+
+class TodoListType(models.Model):
+    name = models.CharField(max_length=20)
+
+
+class TodoList(models.Model):
+    content = models.CharField(max_length=100)
+    type = models.ForeignKey('TodoListType', on_delete=models.DO_NOTHING, null=True)
+    sponsor = models.ForeignKey('acauth.User', on_delete=models.DO_NOTHING, null=True)
+    pub_time = models.DateTimeField(auto_now_add=True)
+    is_done = models.BooleanField(default=False)
+    data = PickledObjectField(null=True)
 
     class Meta:
         ordering = ['-pub_time']

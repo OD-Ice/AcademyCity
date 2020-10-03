@@ -82,25 +82,12 @@
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">首页</a>
+                <a href="{% url 'index:index' %}" class="nav-link">首页</a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">相关</a>
+                <a href="{% url 'acauth:logout' %}" class="nav-link">退出登录</a>
             </li>
         </ul>
-
-        <!-- SEARCH FORM -->
-        <form class="form-inline ml-3">
-            <div class="input-group input-group-sm">
-                <input class="form-control form-control-navbar" type="search" placeholder="搜索" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-navbar" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
-        </form>
-
     </nav>
     <!-- /.navbar -->
 
@@ -138,14 +125,6 @@
                             <i class="nav-icon fas fa-home"></i>
                             <p>
                                 首页
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-user-ninja"></i>
-                            <p>
-                                个人主页
                             </p>
                         </a>
                     </li>
@@ -202,7 +181,11 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{% url 'student:student_list' %}" class="nav-link">
+                                {% if user.school %}
+                                    <a href="{% url 'student:student_list' %}" class="nav-link">
+                                {% else %}
+                                    <a href="javascript: void(0);" class="nav-link bg-gray disabled">
+                                {% endif %}
                                     <i class="nav-icon fas fa-address-book "></i>
                                     <p>
                                         学生名单

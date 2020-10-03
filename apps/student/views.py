@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from django.views.decorators.http import require_POST
 from apps.course.models import Score
 from utils import restful, pages
+from .models import Superpower
 
 User = get_user_model()
 
@@ -14,6 +15,7 @@ User = get_user_model()
 class StudentsListView(View):
     def get(self, request):
         school = request.user.school
+        levels = Superpower.objects.all()
         if school:
             current_num = request.GET.get('p', 1)  # 当前页码
             name = request.GET.get('name')
@@ -30,6 +32,7 @@ class StudentsListView(View):
                 'name': name,
                 'paginator': paginator,
                 'page_obj': page_obj,
+                'levels': levels,
             }
 
             context_data = self.get_paginator_data(paginator, page_obj)
@@ -38,6 +41,15 @@ class StudentsListView(View):
             return render(request, 'students/students_list.html', context=context)
         else:
             raise Http404
+
+    def post(self, request):
+        student_id = request.POST.get('student_id')
+        level_id = request.POST.get('level_id')
+        superpower = Superpower.objects.get(pk=level_id)
+        student = User.objects.get(uid=student_id)
+        student.superpower = superpower
+        student.save()
+        return restful.ok()
 
     # 获取当前页码和前后四个页码
     @staticmethod

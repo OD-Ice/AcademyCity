@@ -9,4 +9,5 @@ urlpatterns = [
     path('img_captcha/', views.image_captcha, name='img_captcha'),
     # path('operate_group/', views.operate_group, name='operate_group'),
     path('upload_avatar/', views.upload_avatar, name='upload_avatar'),
+    path('logout/', views.logout_view, name='logout'),
 ]

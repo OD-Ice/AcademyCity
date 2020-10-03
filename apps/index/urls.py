@@ -20,4 +20,8 @@ urlpatterns = [
     path('add_comment/', views.add_comment_view, name='add_comment_view'),
     path('director_list/', views.DirectorList.as_view(), name='director_list'),
     path('del_director/', views.del_director, name='del_director'),
+    path('add_message/', views.add_message, name='add_message'),
+    path('agree_apply_level/', views.agree_apply_level, name='agree_apply_level'),
+    path('agree_apply_director/', views.agree_apply_director, name='agree_apply_director'),
+    path('del_message/', views.del_message, name='del_message'),
 ]

@@ -1,8 +1,10 @@
+import json
 from django.core.paginator import Paginator
-from django.shortcuts import render
-from .models import SchoolCategory, SchoolLevel, School, Comments
+from django.db.models import Count, Q
+from django.shortcuts import render, redirect, reverse
+from .models import SchoolCategory, SchoolLevel, School, Comments, TodoListType, TodoList
 from django.views.decorators.http import require_POST
-from .forms import SchoolLevelForm, SchoolForm
+from .forms import SchoolLevelForm, SchoolForm, AddMessageForm
 from utils import restful, pages
 from django.views import View
 from urllib import parse
@@ -10,12 +12,100 @@ import os
 from django.conf import settings
 from django.http import Http404
 from django.contrib.auth import get_user_model
+from apps.student.models import Superpower
 
 User = get_user_model()
 
 
 def index(request):
-    return render(request, 'index/index.html')
+    user = request.user
+    labels = []
+    counts = []
+    if user.school:
+        levels = Superpower.objects.annotate(count=Count('user_set', filter=Q(user_set__school=user.school)))
+        for level in levels:
+            labels.append(level.name)
+            counts.append(level.count)
+        labels.reverse()
+        counts.reverse()
+    labels = json.dumps(labels)
+    counts = json.dumps(counts)
+
+    superpowers = Superpower.objects.all()
+    messages = TodoList.objects.filter(is_done=False)
+
+    context = {
+        'labels': labels,
+        'counts': counts,
+        'levels': superpowers,
+        'messages': messages,
+    }
+    return render(request, 'index/index.html', context=context)
+
+
+@require_POST
+def add_message(request):
+    type_name = request.POST.get('type')
+    sponsor = request.user
+    message_type = TodoListType.objects.get(name=type_name)
+    if type_name == 'apply_level':
+        level_id = request.POST.get('level_id')
+        level = Superpower.objects.get(pk=level_id)
+        content = f'{sponsor.username}请求申请更改能力等级为{level.name}...'
+        data = {'level': level}
+        TodoList.objects.create(content=content, type=message_type, sponsor=sponsor, data=data)
+    elif type_name == 'apply_director':
+        content = f'{sponsor.username}请求申请成为管理者...'
+        TodoList.objects.create(content=content, type=message_type, sponsor=sponsor)
+    elif type_name == 'message':
+        form = AddMessageForm(request.POST)
+        if form.is_valid():
+            content = form.cleaned_data.get('content')
+            TodoList.objects.create(content=content, type=message_type, sponsor=sponsor)
+            return redirect(reverse('index:index'))
+        else:
+            return restful.params_error(form.get_errors())
+    return restful.ok()
+
+
+@require_POST
+def agree_apply_level(request):
+    sponsor_id = request.POST.get('sponsor_id')
+    level_id = request.POST.get('level_id')
+    sponsor = User.objects.get(uid=sponsor_id)
+    superpower = Superpower.objects.get(pk=level_id)
+    message_id = request.POST.get('message_id')
+    apply_message = TodoList.objects.filter(pk=message_id)
+    apply_message.update(is_done=True)
+    sponsor.superpower = superpower
+    sponsor.save()
+    content = f'{sponsor.username}成功将能力等级更改为{superpower.name}.'
+    message_type = TodoListType.objects.get(name='message')
+    TodoList.objects.create(content=content, type=message_type, sponsor=request.user)
+    return restful.ok()
+
+
+@require_POST
+def agree_apply_director(request):
+    sponsor_id = request.POST.get('sponsor_id')
+    sponsor = User.objects.get(uid=sponsor_id)
+    sponsor.is_director = True
+    sponsor.save()
+    message_id = request.POST.get('message_id')
+    apply_message = TodoList.objects.filter(pk=message_id)
+    apply_message.update(is_done=True)
+    content = f'{sponsor.username}正式成为管理者.'
+    message_type = TodoListType.objects.get(name='message')
+    TodoList.objects.create(content=content, type=message_type, sponsor=request.user)
+    return restful.ok()
+
+
+@require_POST
+def del_message(request):
+    message_id = request.POST.get('message_id')
+    message = TodoList.objects.filter(pk=message_id)
+    message.update(is_done=True)
+    return restful.ok()
 
 
 @require_POST

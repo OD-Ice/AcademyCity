@@ -24,3 +24,7 @@ class SchoolForm(forms.ModelForm, FormMixin):
     class Meta:
         model = School
         exclude = ['school_level', 'school_category', 'reg_time']
+
+
+class AddMessageForm(forms.Form, FormMixin):
+    content = forms.CharField(max_length=100)

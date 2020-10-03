@@ -50,7 +50,7 @@ class User(AbstractUser):
     date_joined = models.DateTimeField(auto_now_add=True)
     school = models.ForeignKey(School, on_delete=models.DO_NOTHING, null=True)
     avatar = models.URLField(default=settings.DEFAULT_USER_AVATAR)
-    superpower = models.ForeignKey(Superpower, on_delete=models.DO_NOTHING, default=get_superpower_default_id)
+    superpower = models.ForeignKey(Superpower, on_delete=models.DO_NOTHING, default=get_superpower_default_id, related_name='user_set')
     is_director = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'telephone'

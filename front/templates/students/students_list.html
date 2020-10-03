@@ -28,7 +28,7 @@
                                 {% if name %}
                                     <input type="text" id="name-input" placeholder="学生姓名" class="form-control" name="name" value="{{ name }}">
                                 {% else %}
-                                    <input type="text" id="school-input" placeholder="学生姓名" class="form-control" name="name">
+                                    <input type="text" id="name-input" placeholder="学生姓名" class="form-control" name="name">
                                 {% endif %}
                             </div>
                             <div class="form-group search-btn">
@@ -63,9 +63,11 @@
                                     <td>{{ student.last_login | time_format }}</td>
                                     <td>
                                     {% if user.is_director %}
-                                        <button class="del-btn btn btn-block btn-danger" data-student-id="{{ student.pk }}" data-student-name="{{ student.username }}">开除学籍!</button>
+                                        <button class="edit-btn btn btn-info" data-toggle="modal" data-target="#level-modal" data-student-id="{{ student.pk }}" data-student-superpower="{{ student.superpower.pk }}">修改等级</button>
+                                        <button class="del-btn btn btn-danger" data-student-id="{{ student.pk }}" data-student-name="{{ student.username }}">开除学籍!</button>
                                     {% else %}
-                                        <button class="del-btn btn btn-block btn-danger disabled">开除学籍!</button>
+                                        <button class="edit-btn btn btn-info disabled">修改等级</button>
+                                        <button class="del-btn btn btn-danger disabled">开除学籍!</button>
                                     {% endif %}
                                     </td>
                                 </tr>
@@ -107,6 +109,36 @@
                             </ul>
                         </nav>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block endfooter %}
+    <div class="modal fade" id="level-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="level-input" class="col-form-label">能力等级</label>
+                            <select class="form-control" id="level-input">
+                                {% for level in levels %}
+                                    <option value="{{ level.pk }}">{{ level.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary submit-btn">确定</button>
                 </div>
             </div>
         </div>
