@@ -212,7 +212,11 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{% url 'course:publish_course' %}" class="nav-link">
+                                {% if user.school %}
+                                    <a href="{% url 'course:publish_course' %}" class="nav-link">
+                                {% else %}
+                                    <a href="javascript: void(0);" class="nav-link bg-gray disabled">
+                                {% endif %}
                                     <i class="nav-icon fas fa-edit"></i>
                                     <p>
                                         发布课程
