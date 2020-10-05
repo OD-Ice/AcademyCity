@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="{% static 'highlight/rainbow.css' %}">
     <script src="{% static 'js/school_detail.min.js' %}"></script>
     <script src="{% static 'highlight/highlight.pack.js' %}"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
 {% endblock %}
 
 {% block content-header %}
@@ -126,4 +125,8 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block endfooter %}
+    <script>hljs.initHighlightingOnLoad();</script>
 {% endblock %}
