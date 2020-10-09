@@ -25,13 +25,13 @@
 + adminLTE
 + bootstrap
 + jquery+html+css
++ arttemplate
 
 后端
 
 + django
 + mysql
 + memcached
-+ arttemplate
 
 项目部署
 
